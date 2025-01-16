@@ -12,6 +12,7 @@ local jokers_to_load = {
     'addiction',
     'bishop',
     'triangle_joker',
+    'traveller',
 
     -- Uncommon jokers
     'pet_rock',
@@ -57,7 +58,11 @@ if debug then
                 SMODS.add_card({
                     set = 'Joker',
                     key = 'j_blueprint',
-                })  
+                })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_traveller'
+                })
             end
 
             SMODS.add_card({
