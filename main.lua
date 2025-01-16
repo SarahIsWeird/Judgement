@@ -1,3 +1,5 @@
+local debug = true
+
 SMODS.Atlas {
     key = 'Judgement',
     path = 'Judgement.png',
@@ -311,98 +313,102 @@ SMODS.Joker {
     end,
 }
 
---- Debug keybinds
+-------- Debug stuff ---------
 
-SMODS.Keybind {
-    key = 'create_joker',
-    key_pressed = 'p',
-    held_keys = { 'lctrl' },
-    action = function ()
-        if G.CONTROLLER.held_keys['lshift'] then
+if debug then
+    --- Debug keybinds
+
+    SMODS.Keybind {
+        key = 'create_joker',
+        key_pressed = 'p',
+        held_keys = { 'lctrl' },
+        action = function ()
+            if G.CONTROLLER.held_keys['lshift'] then
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_pet_rock',
+                })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_triangle_joker',
+                })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_addiction',
+                })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_deal_with_the_devil',
+                })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_blueprint',
+                })  
+            end
+
             SMODS.add_card({
                 set = 'Joker',
-                key = 'j_jdg_pet_rock',
+                key = 'j_jdg_bishop',
             })
-            SMODS.add_card({
-                set = 'Joker',
-                key = 'j_jdg_triangle_joker',
-            })
-            SMODS.add_card({
-                set = 'Joker',
-                key = 'j_jdg_addiction',
-            })
-            SMODS.add_card({
-                set = 'Joker',
-                key = 'j_jdg_deal_with_the_devil',
-            })
-            SMODS.add_card({
-                set = 'Joker',
-                key = 'j_blueprint',
-            })  
         end
+    }
 
-        SMODS.add_card({
-            set = 'Joker',
-            key = 'j_jdg_bishop',
-        })
-    end
-}
-
-SMODS.Keybind {
-    key = 'make_stone',
-    key_pressed = 's',
-    held_keys = { 'lctrl' },
-    action = function ()
-        for i = 1, #G.hand.highlighted do
-            G.hand.highlighted[i]:set_ability(G.P_CENTERS.m_stone)
+    SMODS.Keybind {
+        key = 'make_stone',
+        key_pressed = 's',
+        held_keys = { 'lctrl' },
+        action = function ()
+            for i = 1, #G.hand.highlighted do
+                G.hand.highlighted[i]:set_ability(G.P_CENTERS.m_stone)
+            end
         end
-    end
-}
+    }
 
-local function get_next_edition(edition)
-    if not edition then return {foil=true} end
-    if edition.foil then return {holo=true} end
-    if edition.holo then return {polychrome=true} end
-    if edition.polychrome then return {negative=true} end
-    return nil
+    local function get_next_edition(edition)
+        if not edition then return {foil=true} end
+        if edition.foil then return {holo=true} end
+        if edition.holo then return {polychrome=true} end
+        if edition.polychrome then return {negative=true} end
+        return nil
+    end
+
+    local function get_next_seal(seal)
+        if not seal then return 'Gold' end
+        if seal == 'Gold' then return 'Red' end
+        if seal == 'Red' then return 'Blue' end
+        if seal == 'Blue' then return 'Purple' end
+        if seal == 'Purple' then return nil end
+    end
+
+    SMODS.Keybind {
+        key = 'make_edition',
+        key_pressed = 'e',
+        held_keys = { 'lctrl' },
+        action = function ()
+            for i = 1, #G.hand.highlighted do
+                local card = G.hand.highlighted[i]
+                card:set_edition(get_next_edition(card.edition), false, false)
+            end
+        end
+    }
+
+    SMODS.Keybind {
+        key = 'make_seal',
+        key_pressed = 't',
+        held_keys = { 'lctrl' },
+        action = function ()
+            for i = 1, #G.hand.highlighted do
+                local card = G.hand.highlighted[i]
+                card:set_seal(get_next_seal(card.seal), false, false)
+            end
+        end
+    }
+
+    SMODS.Keybind {
+        key = 'jdg_restart',
+        key_pressed = 'n',
+        action = function()
+            SMODS.restart_game()
+        end
+    }
 end
-
-local function get_next_seal(seal)
-    if not seal then return 'Gold' end
-    if seal == 'Gold' then return 'Red' end
-    if seal == 'Red' then return 'Blue' end
-    if seal == 'Blue' then return 'Purple' end
-    if seal == 'Purple' then return nil end
-end
-
-SMODS.Keybind {
-    key = 'make_edition',
-    key_pressed = 'e',
-    held_keys = { 'lctrl' },
-    action = function ()
-        for i = 1, #G.hand.highlighted do
-            local card = G.hand.highlighted[i]
-            card:set_edition(get_next_edition(card.edition), false, false)
-        end
-    end
-}
-
-SMODS.Keybind {
-    key = 'make_seal',
-    key_pressed = 't',
-    held_keys = { 'lctrl' },
-    action = function ()
-        for i = 1, #G.hand.highlighted do
-            local card = G.hand.highlighted[i]
-            card:set_seal(get_next_seal(card.seal), false, false)
-        end
-    end
-}
-
-SMODS.Keybind {
-    key = 'jdg_restart',
-    key_pressed = 'n',
-    action = function()
-        SMODS.restart_game()
-    end
-}
