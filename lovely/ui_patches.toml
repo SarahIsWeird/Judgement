@@ -1,0 +1,41 @@
+[manifest]
+version = "1.0.0"
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = 'if center.name == "Square Joker" and (center.discovered or self.bypass_discovery_center) then'
+position = 'before'
+payload = '''
+if center.name == "j_jdg_triangle_joker" and (center.discovered or self.bypass_discovery_center) then
+    H = W
+    self.T.h = H
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = "if _center.name == 'Photograph' and (_center.discovered or self.bypass_discovery_center) then"
+position = 'before'
+payload = '''
+if _center.name == "j_jdg_triangle_joker" and (_center.discovered or self.bypass_discovery_center) then
+    self.children.center.scale.y = self.children.center.scale.x
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = 'elseif self.config.center.name == "Square Joker" then'
+position = 'before'
+payload = '''
+elseif self.config.center.name == "j_jdg_triangle_joker" then
+    H = W
+    self.T.h = H*scale
+    self.T.w = W*scale
+'''
+match_indent = true

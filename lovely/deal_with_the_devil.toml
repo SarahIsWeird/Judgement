@@ -1,0 +1,21 @@
+[manifest]
+version = "1.0.0"
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua' # Line 646
+pattern = 'mult, hand_chips = mod_mult(mult), mod_chips(hand_chips)'
+position = 'before'
+payload = '''
+for i = 1, #G.jokers.cards do
+    -- Is there a better way? Who knows. This works at least :)
+    -- TODO: Fix mult rendering so we can do mult = -mult!
+    if G.jokers.cards[i].label == 'j_jdg_deal_with_the_devil' then
+        mult = 0
+        update_hand_text({StatusText = 'Oof!'}, {mult = 0})
+        break
+    end
+end
+'''
+match_indent = true

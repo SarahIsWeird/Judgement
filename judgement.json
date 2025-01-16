@@ -1,0 +1,15 @@
+{
+    "id": "judgement",
+    "name": "Judgement",
+    "author": ["u/Clyran", "SarahIsWeird"],
+    "description": "Random jokers, like the tarot card, yk?",
+    "prefix": "jdg",
+    "main_file": "main.lua",
+    "priority": 0,
+    "display_name": "Judgement",
+    "version": "0.0.1",
+    "dependencies": [
+        "Steamodded (>=1.*~)",
+        "Lovely (>=0.6)"
+    ]
+}
