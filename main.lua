@@ -16,6 +16,7 @@ local jokers_to_load = {
 
     -- Uncommon jokers
     'pet_rock',
+    'rosace',
 
     -- Rare jokers
     'deal_with_the_devil',
@@ -63,6 +64,10 @@ if debug then
                     set = 'Joker',
                     key = 'j_jdg_traveller'
                 })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_rosace'
+                })
             end
 
             SMODS.add_card({
@@ -79,6 +84,17 @@ if debug then
         action = function ()
             for i = 1, #G.hand.highlighted do
                 G.hand.highlighted[i]:set_ability(G.P_CENTERS.m_stone)
+            end
+        end
+    }
+
+    SMODS.Keybind {
+        key = 'make_wild',
+        key_pressed = 'w',
+        held_keys = { 'lctrl' },
+        action = function ()
+            for i = 1, #G.hand.highlighted do
+                G.hand.highlighted[i]:set_ability(G.P_CENTERS.m_wild)
             end
         end
     }
