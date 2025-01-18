@@ -64,6 +64,10 @@ if debug then
                     set = 'Joker',
                     key = 'j_jdg_bishop',
                 })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_traveller',
+                })
             end
 
             SMODS.add_card({
