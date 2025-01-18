@@ -35,11 +35,14 @@ local function find_highest_played_hands()
     local highest_played_hands = {}
 
     for k, v in pairs(G.GAME.hands) do
-        if v.played == highest_played_count then
-            highest_played_hands[#highest_played_hands+1] = k
-        elseif v.played > highest_played_count then
-            highest_played_count = v.played
-            highest_played_hands = { k }
+        -- Prevent hands like Flush Five being upgraded when not yet unlocked
+        if v.visible or v.played > 0 then
+            if v.played == highest_played_count then
+                highest_played_hands[#highest_played_hands+1] = k
+            elseif v.played > highest_played_count then
+                highest_played_count = v.played
+                highest_played_hands = { k }
+            end
         end
     end
 
