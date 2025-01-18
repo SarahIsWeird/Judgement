@@ -16,6 +16,36 @@ local function perform_hand_levelup(hand_type, level_diff)
     update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 end
 
+local function dissolve_consumables()
+    local count = 0
+
+    for i = #G.consumeables.cards, 1, -1 do
+        local consumable = G.consumeables.cards[i]
+        if not consumable.is_dissolving then
+            consumable:start_dissolve({ G.C.RED })
+            count = count + 1
+        end
+    end
+
+    return count
+end
+
+local function find_highest_played_hands()
+    local highest_played_count = 0
+    local highest_played_hands = {}
+
+    for k, v in pairs(G.GAME.hands) do
+        if v.played == highest_played_count then
+            highest_played_hands[#highest_played_hands+1] = k
+        elseif v.played > highest_played_count then
+            highest_played_count = v.played
+            highest_played_hands = { k }
+        end
+    end
+
+    return highest_played_hands
+end
+
 SMODS.Joker {
     key = 'event_horizon',
     loc_txt = {
@@ -41,31 +71,15 @@ SMODS.Joker {
     perishable_compat = true,
     eternal_compat = true,
     calculate = function (self, card, context)
-        if not context.first_hand_drawn or context.blueprint then return end
+        if not context.setting_blind or context.blueprint then return end
 
-        local consumable_count = #G.consumeables.cards
-        if consumable_count == 0 then return end
+        local dissolved_consumables = dissolve_consumables()
+        if dissolved_consumables == 0 then return end
 
-        for i = consumable_count, 1, -1 do
-            local consumable = G.consumeables.cards[i]
-            -- Should we also remove them from the consumable list already?
-            -- As it stands, two Event Horizons upgrade the hand twice.
-            consumable:start_dissolve({ G.C.RED })
-        end
-
-        local highest_played_count = 0
-        local highest_played_hands = {}
-        for k, v in pairs(G.GAME.hands) do
-            if v.played == highest_played_count then
-                highest_played_hands[#highest_played_hands+1] = k
-            elseif v.played > highest_played_count then
-                highest_played_count = v.played
-                highest_played_hands = { k }
-            end
-        end
-
+        local highest_played_hands = find_highest_played_hands()
         local hand_to_upgrade = pseudorandom_element(highest_played_hands, pseudoseed('event_horizon'))
-        local levels = consumable_count * card.ability.extra.levels_per_consumable
+        local levels = dissolved_consumables * card.ability.extra.levels_per_consumable
+
         delay(1)
         perform_hand_levelup(hand_to_upgrade, levels)
     end
