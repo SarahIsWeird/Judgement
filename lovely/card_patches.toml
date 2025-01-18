@@ -1,0 +1,13 @@
+[manifest]
+version = '1.0.0'
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = 'function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)'
+position = 'after'
+payload = '''
+self.is_dissolving = true
+'''
+match_indent = true
