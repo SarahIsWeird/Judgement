@@ -1,7 +1,7 @@
 {
     "id": "judgement",
     "name": "Judgement",
-    "author": ["u/Clyran", "SarahIsWeird"],
+    "author": ["u/Clyran", "SarahIsWeird", "walles2"],
     "description": "Random jokers, like the tarot card, yk?",
     "prefix": "jdg",
     "main_file": "main.lua",
