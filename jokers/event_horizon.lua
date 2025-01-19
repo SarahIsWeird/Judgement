@@ -30,25 +30,6 @@ local function dissolve_consumables()
     return count
 end
 
-local function find_highest_played_hands()
-    local highest_played_count = 0
-    local highest_played_hands = {}
-
-    for k, v in pairs(G.GAME.hands) do
-        -- Prevent hands like Flush Five being upgraded when not yet unlocked
-        if v.visible or v.played > 0 then
-            if v.played == highest_played_count then
-                highest_played_hands[#highest_played_hands+1] = k
-            elseif v.played > highest_played_count then
-                highest_played_count = v.played
-                highest_played_hands = { k }
-            end
-        end
-    end
-
-    return highest_played_hands
-end
-
 SMODS.Joker {
     key = 'event_horizon',
     loc_txt = {
@@ -79,8 +60,8 @@ SMODS.Joker {
         local dissolved_consumables = dissolve_consumables()
         if dissolved_consumables == 0 then return end
 
-        local highest_played_hands = find_highest_played_hands()
-        local hand_to_upgrade = pseudorandom_element(highest_played_hands, pseudoseed('event_horizon'))
+        -- Defaults to High Card. Seems sensible.
+        local hand_to_upgrade = G.GAME.current_round.most_played_poker_hand
         local levels = dissolved_consumables * card.ability.extra.levels_per_consumable
 
         delay(1)
