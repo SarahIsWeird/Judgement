@@ -20,6 +20,7 @@ local jokers_to_load = {
 
     -- Rare jokers
     'deal_with_the_devil',
+    'event_horizon',
 }
 
 for _, name in ipairs(jokers_to_load) do
@@ -62,7 +63,11 @@ if debug then
                 })
                 SMODS.add_card({
                     set = 'Joker',
-                    key = 'j_jdg_traveller'
+                    key = 'j_jdg_bishop',
+                })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_traveller',
                 })
                 SMODS.add_card({
                     set = 'Joker',
@@ -72,8 +77,22 @@ if debug then
 
             SMODS.add_card({
                 set = 'Joker',
-                key = 'j_jdg_bishop',
+                key = 'j_jdg_event_horizon',
             })
+        end
+    }
+
+    SMODS.Keybind {
+        key = 'make_consumable',
+        key_pressed = 'c',
+        held_keys = { 'lctrl' },
+        action = function ()
+            local card = SMODS.create_card({
+                set = 'Tarot',
+            })
+
+            card:add_to_deck()
+            G.consumeables:emplace(card)
         end
     }
 
