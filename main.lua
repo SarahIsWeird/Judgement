@@ -13,6 +13,7 @@ local jokers_to_load = {
     'bishop',
     'triangle_joker',
     'traveller',
+    'imposter_syndrome',
     'coin',
 
     -- Uncommon jokers
@@ -81,7 +82,7 @@ if debug then
             end
             SMODS.add_card({
                 set = 'Joker',
-                key = 'j_jdg_coin',
+                key = 'j_jdg_imposter_syndrome',
             })
         end
     }
