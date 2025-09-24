@@ -14,6 +14,7 @@ local jokers_to_load = {
     'triangle_joker',
     'traveller',
     'imposter_syndrome',
+    'coin',
 
     -- Uncommon jokers
     'pet_rock',
@@ -74,8 +75,11 @@ if debug then
                     set = 'Joker',
                     key = 'j_jdg_rosace'
                 })
+                SMODS.add_card({
+                    set = 'Joker',
+                    key = 'j_jdg_event_horizon',
+                })
             end
-
             SMODS.add_card({
                 set = 'Joker',
                 key = 'j_jdg_imposter_syndrome',
@@ -118,6 +122,18 @@ if debug then
             end
         end
     }
+
+    SMODS.Keybind {
+        key = 'make_lucky',
+        key_pressed = 'l',
+        held_keys = { 'lctrl' },
+        action = function ()
+            for i = 1, #G.hand.highlighted do
+                G.hand.highlighted[i]:set_ability(G.P_CENTERS.m_lucky)
+            end
+        end
+    }
+
 
     local function get_next_edition(edition)
         if not edition then return {foil=true} end
